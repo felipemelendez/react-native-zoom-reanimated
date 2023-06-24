@@ -134,7 +134,7 @@ export default function Zoom(props: PropsWithChildren<ZoomProps>): React.ReactNo
   const handlePanOutside = useCallback((): void => {
     if (handlePanOutsideTimeoutId.current !== undefined)
       clearTimeout(handlePanOutsideTimeoutId.current)
-
+    // @ts-ignore
     handlePanOutsideTimeoutId.current = setTimeout((): void => {
       const { width, height } = getContentContainerSize()
       const maxOffset = {
@@ -265,7 +265,7 @@ export default function Zoom(props: PropsWithChildren<ZoomProps>): React.ReactNo
         runOnJS(handlePanOutside)()
       })
       .onTouchesMove((e: GestureTouchEvent, state: GestureStateManagerType): void => {
-        if ([State.UNDETERMINED, State.BEGAN].includes(e.state))
+        if (e.state === State.UNDETERMINED || e.state === State.BEGAN)
           if (isZoomedIn.value || e.numberOfTouches === 2)
             state.activate()
           else
